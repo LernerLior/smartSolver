@@ -1,2 +1,13 @@
 # SmartSolver
+> Desenvolvido durante as aulas de Projetos de Engenhaira da Computação I do curso de Engenharia da Computação da Universidade Presbiteriana Mackenzie.
+
+## Descrição
+SmartSolver é uma plataforma que tem como objetivo reunir reclamações de diversos sites em um único lugar, além de usar a IA para recomendar soluções para essaes problemas, sua busca e tratamento.
+
+## Autores
+- Lior Lerner
+- Vinícius Fioravante
+
+
+
 
