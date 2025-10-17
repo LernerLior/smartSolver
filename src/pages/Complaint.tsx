@@ -1,3 +1,5 @@
+import "../styles/advice_page.css";
+
 type ComplaintProps = {
   complaintTitle: string;
   complaintText: string;
