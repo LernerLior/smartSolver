@@ -1,6 +1,4 @@
 # SmartSolver
-<<<<<<< HEAD
-=======
 > Desenvolvido durante as aulas de Projetos de Engenhaira da Computação I do curso de Engenharia da Computação da Universidade Presbiteriana Mackenzie.
 
 ## Descrição
@@ -10,7 +8,3 @@ SmartSolver é uma plataforma que tem como objetivo reunir reclamações de dive
 - Lior Lerner
 - Vinícius Fioravante
 
-
-
-
->>>>>>> d1b1a514f4879890f9462380778b69b4708eacc1
