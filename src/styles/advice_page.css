@@ -22,6 +22,16 @@ body {
         "main aside";
 }
 
+.meubody {
+    background-color: var(--thirtiary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "main aside";
+}
+
 header{
     grid-area: header;
     background: var(--primary-color);

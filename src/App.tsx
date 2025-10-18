@@ -1,10 +1,8 @@
-import Dashboard from './pages/Dashboard';
+import AppRoutes from './router';
 
 function App() {
   return (
-    <>
-      <Dashboard />
-    </>
+     <AppRoutes/>
   );
 }
 

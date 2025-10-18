@@ -1,0 +1,19 @@
+[
+  {
+    "categoria": "Reclamações",
+    "valor": 40
+  },
+  {
+    "categoria": "Elogois",
+    "valor": 25
+  },
+  {
+    "categoria": "Sugestões",
+    "valor": 20
+  },
+  {
+    "categoria": "mains um",
+    "valor": 15
+  },
+  { "categoria": "Outros", "valor": 15 }
+]

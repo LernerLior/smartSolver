@@ -14,8 +14,8 @@ export default function Complaint({
   complaintPercent,
 }: ComplaintProps) {
   return (
-    <>
-      <body>
+  
+      <div className="meubody">
         <header>
           <button onClick={() => window.history.back()}>Voltar</button>
           <h1>Recomendações</h1>
@@ -34,7 +34,6 @@ export default function Complaint({
           <h2>Recomendações:</h2>
           <p>{complaintText}</p>
         </main>
-      </body>
-    </>
+      </div>
   );
 }
