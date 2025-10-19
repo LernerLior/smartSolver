@@ -45,9 +45,6 @@ export default function Dashboard() {
                 </nav>
             </aside>
             <main>
-                <div>
-
-                </div>
                 <section>
                     <h3>Gráficos</h3>
                     <div>
@@ -76,8 +73,9 @@ export default function Dashboard() {
                         )
                         )}
                     </div>
-                </section>
+                </section >
             </main>
         </div>
     );
 }
+
