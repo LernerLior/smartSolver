@@ -13,9 +13,10 @@ type complaint = {
 };
 
 const dados = [
-  { categoria: 'Reclamações', valor: 40 },
-  { categoria: 'Elogios', valor: 25 },
-  { categoria: 'Sugestões', valor: 20 },
+  { categoria: 'Problemas Técnicos', valor: 40 },
+  { categoria: ' Serviço', valor: 25 },
+  { categoria: 'Atendimento', valor: 20 },
+  { categoria: 'Manutenção', valor: 15 },
   { categoria: 'Outros', valor: 15 },
 ];
 
@@ -54,15 +55,25 @@ export default function Dashboard() {
         </nav>
       </aside>
       <main>
-        <section className="tainer">
+        <section className="graph-section">
           <h3>Gráficos</h3>
           <div>
             <PieChart data={dados} />
           </div>
         </section>
 
-        <section className="plaints">
-          <h3>Reclamações</h3>
+        <section className="complaint-section">
+          <div className="reclamation-header">
+            <h3>Reclamações</h3>
+            <div className="search-filter-container">
+              <input 
+                type="text" 
+                placeholder="Pesquisar..." 
+                className="search-bar" 
+              />
+              <button className="filter-btn">Filtrar</button>
+            </div>
+          </div>
           <div className="complaints-container">
             {lista.map((reclamacao) => (
               <div key={reclamacao.complaint_num} className="complaint-card">

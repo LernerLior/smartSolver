@@ -1,18 +1,18 @@
 [
   {
-    "categoria": "Reclamações",
+    "categoria": "Problemas Técnicos",
     "valor": 40
   },
   {
-    "categoria": "Elogois",
+    "categoria": "Reclamações de Serviço",
     "valor": 25
   },
   {
-    "categoria": "Sugestões",
+    "categoria": "Atendimento ao Cliente",
     "valor": 20
   },
   {
-    "categoria": "mains um",
+    "categoria": "Manutenção Preventiva",
     "valor": 15
   },
   { "categoria": "Outros", "valor": 15 }
