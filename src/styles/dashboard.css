@@ -14,11 +14,11 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 60px 1fr 60px;
+  grid-template-columns: 200px auto;
+  grid-template-rows: 60px auto;
   grid-template-areas:
     "empty header"
-    "aside main"
+
     "aside main";
   height: 100vh;
   gap: 2px;
@@ -54,7 +54,7 @@ main {
   grid-area: main;
   display: grid;
   grid-template-areas:
-    "section section";
+    "section  section";
   grid-template-columns: 1fr 1fr;
   gap: 2px;   
   border-radius: 20px;
@@ -62,12 +62,14 @@ main {
 }
 
 section {
+  grid-area: section;
   background-color: var(--secondary-color);
-  min-height: 150px; 
+
   border-radius: 20px;
   justify-content: center;
   padding: 1rem; 
 }
+
 
 
 .complaints-container {
