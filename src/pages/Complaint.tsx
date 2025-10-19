@@ -1,4 +1,31 @@
+import React from 'react';
 import '../styles/advice_page.css';
+function BoldTextWithLineBreaks({ text }: { text: string }) {
+  // Primeiro, separamos o texto por ** para identificar bold
+  const boldParts = text.split(/\*\*(.*?)\*\*/g);
+
+  return (
+    <>
+      {boldParts.map((part: string, i: number) => {
+        // Agora, para cada parte, dividimos por \n
+        const lines = part.split("\n");
+
+        return lines.map((line: string, j: number) => {
+          // Se for índice ímpar, é bold
+          const content = i % 2 === 1 ? <strong key={j}>{line}</strong> : line;
+
+          // Adiciona <br /> só se não for a última linha
+          return (
+            <React.Fragment key={`${i}-${j}`}>
+              {content}
+              {j < lines.length - 1 && <br />}
+            </React.Fragment>
+          );
+        });
+      })}
+    </>
+  );
+}
 
 type ComplaintProps = {
   complaintTitle: string;
@@ -18,7 +45,7 @@ export default function Complaint({
   return (
     <div className="meubody">
       <header>
-        <button onClick={() => window.history.back()}>Voltar</button>
+        <button className="back-button" onClick={() => window.history.back()}>Voltar</button>
         <h1>Recomendações</h1>
       </header>
 
@@ -30,8 +57,11 @@ export default function Complaint({
 
       <main>
         <h1>{complaintTitle}</h1>
+        <p>{complaintText}</p>
         <h2>Recomendações:</h2>
-        <p>{complaintsolution}</p>
+        <p>
+          <BoldTextWithLineBreaks text={complaintsolution} />
+        </p>
       </main>
     </div>
   );

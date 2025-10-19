@@ -78,3 +78,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#Node
+node_modules/

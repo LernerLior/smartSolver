@@ -14,9 +14,8 @@ type complaint = {
 
 const dados = [
   { categoria: 'Reclamações', valor: 40 },
-  { categoria: 'Elogois', valor: 25 },
+  { categoria: 'Elogios', valor: 25 },
   { categoria: 'Sugestões', valor: 20 },
-  { categoria: 'mains um', valor: 15 },
   { categoria: 'Outros', valor: 15 },
 ];
 
@@ -36,6 +35,9 @@ export default function Dashboard() {
       <aside>
         <nav>
           <ul className="nav-cards">
+            <li className="nav-card">
+              <a href="#">Carregar novos dados</a>
+            </li>
             <li className="nav-card">
               <a href="#">Configurações</a>
             </li>
@@ -65,7 +67,7 @@ export default function Dashboard() {
             {lista.map((reclamacao) => (
               <div key={reclamacao.complaint_num} className="complaint-card">
                 <h4>{reclamacao.complaint_title}</h4>
-                <p>{reclamacao.complaint_description}</p>
+                <p className="teste">{reclamacao.complaint_description}</p>
                 <button
                   className="read-more-btn"
                   onClick={() => carregarbotao(reclamacao.complaint_num)}
