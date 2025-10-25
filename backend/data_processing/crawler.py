@@ -68,16 +68,9 @@ def get_complaint_data(driver, wait_seconds: int = 3) -> dict:
     return data
 
 
-def open_h4_and_collect(driver, n: int = 1, wait_seconds: int = 3, json_path: str = "complaints.json"):
+def open_h4_and_collect(driver, n: int = 1, wait_seconds: int = 3):
     """
-    Coleta sa reclamações clicando nos elementos h4 e salvando os dados em um arquivo JSON.
-    Args:
-        driver (webdriver.Chrome): Instância do navegador.
-        n (int): Número de reclamações a serem coletadas.
-        wait_seconds (int): Tempo de espera para carregamento dos elementos.
-        json_path (str): Caminho do arquivo JSON para salvar os dados.
-    Returns:
-        None
+    Coleta as reclamações clicando nos elementos h4 e retorna uma lista de dicionários.
     """
     complaints_list = []
 
@@ -97,16 +90,16 @@ def open_h4_and_collect(driver, n: int = 1, wait_seconds: int = 3, json_path: st
         driver.back()
         time.sleep(1)
 
-    # Salva JSON
-    with open(json_path, "w", encoding="utf-8") as f:
-        json.dump(complaints_list, f, ensure_ascii=False, indent=4)
-
-    print(f"{len(complaints_list)} complaints saved to {json_path}")
+    return complaints_list
 
 
-def collect_complaints(target_company,complaint_number=6,wait_seconds=10):
+
+def collect_complaints(target_company, complaint_number=6, wait_seconds=10):
     driver = open_company_page(target_company)
 
-    open_h4_and_collect(driver, complaint_number, wait_seconds)
-    
-    driver.quit()
+    try:
+        complaints_list = open_h4_and_collect(driver, complaint_number, wait_seconds)
+    finally:
+        driver.quit()
+
+    return complaints_list

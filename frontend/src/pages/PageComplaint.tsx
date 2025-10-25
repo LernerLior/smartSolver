@@ -28,7 +28,7 @@ export default function PageComplaint() {
   if (!reclamacao) {
     return (
       <div>
-        <p>reclamacao nao localizada</p>
+        <p>Reclamação não localizada</p>
         <button onClick={() => navegacao(-1)}>Voltar</button>
       </div>
     );
