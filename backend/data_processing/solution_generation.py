@@ -4,7 +4,7 @@ from google.genai import types
 import json
 
 def solution_generation(json_data):
-   client = genai.Client(api_key ='AIzaSyBktG16Uv_UFInMP_7wCdnbxJUrWrTUN6A')
+   client = genai.Client(api_key =)
 
    response = client.models.generate_content(
       model="gemini-2.5-flash",
