@@ -4,7 +4,7 @@ from google.genai import types
 import json
 
 def solution_generation(json_data):
-   client = genai.Client()
+   client = genai.Client(api_key ='AIzaSyBktG16Uv_UFInMP_7wCdnbxJUrWrTUN6A')
 
    response = client.models.generate_content(
       model="gemini-2.5-flash",
@@ -17,8 +17,16 @@ def solution_generation(json_data):
       "compaint-solution: {sua solução}, para cada reclamação.",
       max_output_tokens=1024,
       temperature=0.2),
-      content=json.dumps(json_data)
-
+      contents=json.dumps(json_data)
    )
    
-   return response.content
+   return response
+
+
+
+j = open('complaintss.json', 'r')
+g = j.read()
+response = solution_generation(g)
+j.close()
+print(response)
+
