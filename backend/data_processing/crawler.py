@@ -1,24 +1,25 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
+import time
+import json
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
-import pandas as pd
-import datetime
-import os
-import time
+from selenium.common.exceptions import TimeoutException
 
-def collect_complaints(company_name: str, csv_path: str, chromedriver_path: str, pages: int = 1) -> None:
+
+def open_company_page(target_company: str):
     """
-    Collects complaints (title, text, upvotes) from Reclame Aqui and saves them to CSV.
-
+    Abre a página de reclamações da empresa no Reclame Aqui.
+    
     Args:
-        company_name (str): Company name in the Reclame Aqui URL.
-        csv_path (str): Path to the CSV file to save data.
-        chromedriver_path (str): Path to chromedriver.exe.
-        pages (int): Number of pages to collect (default=1).
+        target_company (str): Nome da empresa usado na URL do Reclame Aqui.
+    
+    Returns:
+        webdriver.Chrome: Instância do navegador aberta na página da empresa.
     """
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
@@ -26,88 +27,86 @@ def collect_complaints(company_name: str, csv_path: str, chromedriver_path: str,
     chrome_options.add_argument("--disable-infobars")
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--log-level=3")  
-    service = Service(chromedriver_path)
+
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
-    url = f"https://www.reclameaqui.com.br/empresa/{company_name}/lista-reclamacoes/"
+    url = f"https://www.reclameaqui.com.br/empresa/{target_company}/lista-reclamacoes/"
     driver.get(url)
 
+    return driver
+
+def get_complaint_data(driver, wait_seconds: int = 3) -> dict:
+    """
+    Coleta dados da reclamação na página atual usando os nomes originais do data-testid.
+    """
+    data = {}
     try:
-        cookie_button = WebDriverWait(driver, 5).until(
-            EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div[2]/a[1]'))
+        # Título
+        title_elem = WebDriverWait(driver, wait_seconds).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "h1[data-testid='complaint-title']"))
         )
-        cookie_button.click()
+        data['complaint-title'] = title_elem.text
+
+        # Data
+        try:
+            date_elem = driver.find_element(By.CSS_SELECTOR, "span[data-testid='complaint-creation-date']")
+            data['complaint-creation-date'] = date_elem.text
+        except:
+            data['complaint-creation-date'] = None
+
+        # Descrição
+        try:
+            desc_elem = driver.find_element(By.CSS_SELECTOR, "p[data-testid='complaint-description']")
+            data['complaint-description'] = desc_elem.text
+        except:
+            data['complaint-description'] = None
+
     except TimeoutException:
-        print("No cookies pop-up found.")
+        return None
 
-    complaints_data = []
+    return data
 
-    for page_num in range(pages):
-        print(f"Collecting page {page_num + 1}...")
 
-        try:
-            WebDriverWait(driver, 15).until(
-                EC.presence_of_element_located((By.XPATH, "//h4[@data-testid='compain-title-link']"))
-            )
-        except TimeoutException:
-            print("No complaints found on this page.")
+def open_h4_and_collect(driver, n: int = 1, wait_seconds: int = 3, json_path: str = "complaints.json"):
+    """
+    Coleta sa reclamações clicando nos elementos h4 e salvando os dados em um arquivo JSON.
+    Args:
+        driver (webdriver.Chrome): Instância do navegador.
+        n (int): Número de reclamações a serem coletadas.
+        wait_seconds (int): Tempo de espera para carregamento dos elementos.
+        json_path (str): Caminho do arquivo JSON para salvar os dados.
+    Returns:
+        None
+    """
+    complaints_list = []
+
+    for i in range(n):
+        h4_elements = driver.find_elements(By.CSS_SELECTOR, "h4[data-testid='compain-title-link']")
+        if i >= len(h4_elements):
             break
 
-        last_height = driver.execute_script("return document.body.scrollHeight")
-        while True:
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)
-            new_height = driver.execute_script("return document.body.scrollHeight")
-            if new_height == last_height:
-                break
-            last_height = new_height
+        h4 = h4_elements[i]
+        driver.execute_script("arguments[0].click();", h4)
+        time.sleep(wait_seconds)
 
-        titles = driver.find_elements(By.XPATH, "//h4[@data-testid='compain-title-link']")
+        complaint_data = get_complaint_data(driver, wait_seconds=wait_seconds)
+        if complaint_data:
+            complaints_list.append(complaint_data)
 
-        for title in titles:
-            complaint_title = title.text
+        driver.back()
+        time.sleep(1)
 
-            try:
-                complaint_text = title.find_element(
-                    By.XPATH, ".//following::p[contains(@class,'sc-1pe7b5t-2')]"
-                ).text
-            except:
-                complaint_text = None
+    # Salva JSON
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(complaints_list, f, ensure_ascii=False, indent=4)
 
-            try:
-                upvotes = title.find_element(
-                    By.XPATH, ".//following::span[contains(@class,'upvotes')]"
-                ).text
-            except:
-                upvotes = None
+    print(f"{len(complaints_list)} complaints saved to {json_path}")
 
-            complaints_data.append({
-                "complaint_title": complaint_title,
-                "complaint_text": complaint_text,
-                "upvotes": upvotes,
-                "date_collected": datetime.datetime.now().date(),
-                "time_collected": datetime.datetime.now().time()
-            })
 
-        try:
-            next_button = driver.find_element(By.XPATH, "//button[@data-testid='next-page-navigation-button']")
-            driver.execute_script("arguments[0].click();", next_button)
-            time.sleep(2)
-        except NoSuchElementException:
-            print("No more pages found.")
-            break
+def collect_complaints(target_company,complaint_number=6,wait_seconds=10):
+    driver = open_company_page(target_company)
 
+    open_h4_and_collect(driver, complaint_number, wait_seconds)
+    
     driver.quit()
-
-    # Save to CSV
-    df_new = pd.DataFrame(complaints_data)
-
-    if os.path.exists(csv_path):
-        df_existing = pd.read_csv(csv_path)
-        df = pd.concat([df_existing, df_new], ignore_index=True)
-    else:
-        df = df_new
-
-    df.to_csv(csv_path, index=False)
-    print(f"{len(df_new)} complaints saved to {csv_path}")
-
