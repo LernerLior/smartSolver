@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/advice_page.css';
 import { GoogleGenAI } from '@google/genai';
+import { useState } from 'react';
 
 function BoldTextWithLineBreaks({ text }: { text: string }) {
   // Primeiro, separamos o texto por ** para identificar bold
@@ -37,17 +38,20 @@ type ComplaintProps = {
   complaintsolution: string;
 };
 
-async function ha() {
-  const GEMINI_API_KEY = ' ';
+async function ha(complaintTitle: string, complaintText: string) {
+  const GEMINI_API_KEY = 'AIzaSyBZ-WM6TY66d-tnASTu8hZa4n7pRoaYo0w';
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+const instruction = "Você é um assistente que ajuda a analisar dados de reclamações de clientes. Forneça insights úteis e sugestões de fácil entendimento com base nos dados fornecidos.";
+  const question = 'Why is the sky blue?';
+ const prompt = `${instruction} Reclamação: ${complaintTitle}. Texto: ${complaintText}`;
   const response = await ai.models.generateContent({
     model: 'gemini-2.0-flash-001',
-    contents: 'Why is the sky blue?',
+    contents: prompt,
   });
-  console.log(response.text);
-  console.log('Why is the sky blue?');
-alert('Why is the sky blue?');
+  return response.text;
+ 
 }
+
 
 export default function Complaint({
   complaintTitle,
@@ -56,6 +60,20 @@ export default function Complaint({
   complaintPercent,
   complaintsolution,
 }: ComplaintProps) {
+
+
+
+
+  const [loading, setLoading] = useState(false);
+  const [solution, setSolution] = useState<string | null>(null);
+
+
+  const handleClick = async () => {
+    setLoading(true);
+const aiSolution = await ha(complaintTitle, complaintText);
+setSolution(aiSolution);
+setLoading(false);
+};
   return (
     <div className="meubody">
       <header>
@@ -76,13 +94,16 @@ export default function Complaint({
         <p>{complaintText}</p>
         <h2>Recomendações:</h2>
         <p>
-          <BoldTextWithLineBreaks text={complaintsolution} />
+        {solution && <div className="solution">{solution}</div>}
         </p>
-        <form>
+
+
+
+ 
           <div>
-            <button onClick={ha()}> 'Salvando...' </button>
+            <button onClick={handleClick} disabled={loading}> {loading ? 'Salvando...' : 'Gerar Solução'} </button>
           </div>
-        </form>
+ 
       </main>
     </div>
   );
