@@ -1,11 +1,7 @@
 import React from 'react';
 import '../styles/advice_page.css';
-<<<<<<< HEAD
-
-=======
 import { GoogleGenAI } from '@google/genai';
 import { useState } from 'react';
->>>>>>> 2b726aa1b97ca09fdeb86ea33aa253147bd1fe05
 
 function BoldTextWithLineBreaks({ text }: { text: string }) {
   // Primeiro, separamos o texto por ** para identificar bold
@@ -42,22 +38,24 @@ type ComplaintProps = {
   complaintsolution: string;
 };
 
-<<<<<<< HEAD
-=======
-async function ha(complaintTitle: string, complaintText: string) {
+async function AIAnalysis(complaintTitle: string, complaintText: string) {
   const GEMINI_API_KEY = 'AIzaSyBZ-WM6TY66d-tnASTu8hZa4n7pRoaYo0w';
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-const instruction = "Você é um assistente que ajuda a analisar dados de reclamações de clientes. Forneça insights úteis e sugestões de fácil entendimento com base nos dados fornecidos.";
-  const question = 'Why is the sky blue?';
- const prompt = `${instruction} Reclamação: ${complaintTitle}. Texto: ${complaintText}`;
+  const instruction =
+    "Você é um assistente que ajuda a analisar dados de reclamações de clientes. Forneça insights úteis e sugestões de fácil entendimento com base nos dados fornecidos.Seja breve e preciso.";
+
+  const prompt = `${instruction}\nReclamação: ${complaintTitle}\nTexto: ${complaintText}`;
+
   const response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash-001',
+    model: "gemini-2.0-flash-001",
     contents: prompt,
   });
-  return response.text;
- 
+
+
+  const text = response.text;
+
+  return text ?? "Desculpe, não foi possível gerar uma solução no momento.";
 }
->>>>>>> 2b726aa1b97ca09fdeb86ea33aa253147bd1fe05
 
 
 export default function Complaint({
@@ -68,19 +66,16 @@ export default function Complaint({
   complaintsolution,
 }: ComplaintProps) {
 
-
-
-
   const [loading, setLoading] = useState(false);
   const [solution, setSolution] = useState<string | null>(null);
 
-
   const handleClick = async () => {
     setLoading(true);
-const aiSolution = await ha(complaintTitle, complaintText);
-setSolution(aiSolution);
-setLoading(false);
-};
+    const aiSolution = await AIAnalysis(complaintTitle, complaintText); 
+    setSolution(aiSolution);
+    setLoading(false);
+  };
+
   return (
     <div className="meubody">
       <header>
@@ -99,21 +94,20 @@ setLoading(false);
       <main>
         <h1>{complaintTitle}</h1>
         <p>{complaintText}</p>
-        <h2>Recomendações:</h2>
-        <p>
-        {solution && <div className="solution">{solution}</div>}
-        </p>
 
+        <h2>Recomendações da IA:</h2>
 
-
- 
-          <div>
-<<<<<<< HEAD
-=======
-            <button onClick={handleClick} disabled={loading}> {loading ? 'Salvando...' : 'Gerar Solução'} </button>
->>>>>>> 2b726aa1b97ca09fdeb86ea33aa253147bd1fe05
+        {solution && (
+          <div className="solution">
+            <BoldTextWithLineBreaks text={solution} />
           </div>
- 
+        )}
+
+        <div style={{ marginTop: "20px" }}>
+          <button onClick={handleClick} disabled={loading}>
+            {loading ? "Gerando..." : "Gerar Solução com IA"}
+          </button>
+        </div>
       </main>
     </div>
   );
