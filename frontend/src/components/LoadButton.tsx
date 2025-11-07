@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 type complaint = {
   complaint_title: string;
@@ -20,7 +20,13 @@ export default function LoadButton({ setLista }: LoadButtonProps) {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/run-main", { method: "POST" });
+        console.log("Fetching data from API...");
+        // console.log("Response received:", `${import.meta.env.VITE_APP_API_URL}/run-main`);
+        const res = await fetch(`${import.meta.env.VITE_APP_API_URL}/run-main`, {
+        method: "POST",
+      });
+
+      
       const data = await res.json();
 
       if (data.status === "success") {

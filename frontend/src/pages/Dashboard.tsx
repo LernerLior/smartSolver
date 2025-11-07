@@ -2,6 +2,8 @@ import '../styles/dashboard.css';
 import reclamacoes from '../data/complaintss.json';
 import { useNavigate } from 'react-router-dom';
 import PieChart from './PieChart';
+import { useState } from 'react';
+import LoadButton from '../components/LoadButton';
 
 type complaint = {
   complaint_title: string;
@@ -21,7 +23,7 @@ const dados = [
 ];
 
 export default function Dashboard() {
-  const lista: complaint[] = reclamacoes;
+  const [lista, setLista] = useState<complaint[]>(reclamacoes);
   const navegar = useNavigate();
 
   const carregarbotao = (id: number) => {
@@ -37,7 +39,7 @@ export default function Dashboard() {
         <nav>
           <ul className="nav-cards">
             <li className="nav-card">
-              <a href="#">Carregar novos dados</a>
+              <LoadButton setLista={setLista} />
             </li>
             <li className="nav-card">
               <a href="#">Configurações</a>

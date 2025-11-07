@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/advice_page.css';
-import { GoogleGenAI } from '@google/genai';
+
 
 function BoldTextWithLineBreaks({ text }: { text: string }) {
   // Primeiro, separamos o texto por ** para identificar bold
@@ -37,17 +37,6 @@ type ComplaintProps = {
   complaintsolution: string;
 };
 
-async function ha() {
-  const GEMINI_API_KEY = ' ';
-  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash-001',
-    contents: 'Why is the sky blue?',
-  });
-  console.log(response.text);
-  console.log('Why is the sky blue?');
-alert('Why is the sky blue?');
-}
 
 export default function Complaint({
   complaintTitle,
@@ -80,7 +69,6 @@ export default function Complaint({
         </p>
         <form>
           <div>
-            <button onClick={ha()}> 'Salvando...' </button>
           </div>
         </form>
       </main>
