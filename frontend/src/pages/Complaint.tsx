@@ -1,6 +1,11 @@
 import React from 'react';
 import '../styles/advice_page.css';
+<<<<<<< HEAD
 
+=======
+import { GoogleGenAI } from '@google/genai';
+import { useState } from 'react';
+>>>>>>> 2b726aa1b97ca09fdeb86ea33aa253147bd1fe05
 
 function BoldTextWithLineBreaks({ text }: { text: string }) {
   // Primeiro, separamos o texto por ** para identificar bold
@@ -37,6 +42,23 @@ type ComplaintProps = {
   complaintsolution: string;
 };
 
+<<<<<<< HEAD
+=======
+async function ha(complaintTitle: string, complaintText: string) {
+  const GEMINI_API_KEY = 'AIzaSyBZ-WM6TY66d-tnASTu8hZa4n7pRoaYo0w';
+  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+const instruction = "Você é um assistente que ajuda a analisar dados de reclamações de clientes. Forneça insights úteis e sugestões de fácil entendimento com base nos dados fornecidos.";
+  const question = 'Why is the sky blue?';
+ const prompt = `${instruction} Reclamação: ${complaintTitle}. Texto: ${complaintText}`;
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.0-flash-001',
+    contents: prompt,
+  });
+  return response.text;
+ 
+}
+>>>>>>> 2b726aa1b97ca09fdeb86ea33aa253147bd1fe05
+
 
 export default function Complaint({
   complaintTitle,
@@ -45,6 +67,20 @@ export default function Complaint({
   complaintPercent,
   complaintsolution,
 }: ComplaintProps) {
+
+
+
+
+  const [loading, setLoading] = useState(false);
+  const [solution, setSolution] = useState<string | null>(null);
+
+
+  const handleClick = async () => {
+    setLoading(true);
+const aiSolution = await ha(complaintTitle, complaintText);
+setSolution(aiSolution);
+setLoading(false);
+};
   return (
     <div className="meubody">
       <header>
@@ -65,12 +101,19 @@ export default function Complaint({
         <p>{complaintText}</p>
         <h2>Recomendações:</h2>
         <p>
-          <BoldTextWithLineBreaks text={complaintsolution} />
+        {solution && <div className="solution">{solution}</div>}
         </p>
-        <form>
+
+
+
+ 
           <div>
+<<<<<<< HEAD
+=======
+            <button onClick={handleClick} disabled={loading}> {loading ? 'Salvando...' : 'Gerar Solução'} </button>
+>>>>>>> 2b726aa1b97ca09fdeb86ea33aa253147bd1fe05
           </div>
-        </form>
+ 
       </main>
     </div>
   );
