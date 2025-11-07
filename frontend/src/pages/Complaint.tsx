@@ -39,10 +39,9 @@ type ComplaintProps = {
 };
 
 async function AIAnalysis(complaintTitle: string, complaintText: string) {
-  const GEMINI_API_KEY = 'AIzaSyBZ-WM6TY66d-tnASTu8hZa4n7pRoaYo0w';
-  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GOOGLE_API_KEY });
   const instruction =
-    "Você é um assistente que ajuda a analisar dados de reclamações de clientes. Forneça insights úteis e sugestões de fácil entendimento com base nos dados fornecidos.Seja breve e preciso.";
+    "Você é um assistente que ajuda a analisar dados de reclamações de clientes. Forneça insights úteis e sugestões de fácil entendimento com base nos dados fornecidos.Seja breve e preciso, mas apresente detalhes suficiente para que as recomendações possam ser implementadas, principalmente nas de maior importância";
 
   const prompt = `${instruction}\nReclamação: ${complaintTitle}\nTexto: ${complaintText}`;
 
