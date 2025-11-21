@@ -1,5 +1,5 @@
 import { useState } from "react";
-import '../styles/load_buttons.css';
+
 type complaint = {
   id: string;
   pk: string;
@@ -11,30 +11,22 @@ type complaint = {
   complaint_per: number;
 };
 
-type LoadButtonProps = {
+type LoadDataButtonProps = {
   setLista: (data: complaint[]) => void;
 };
 
-export default function LoadButton({ setLista }: LoadButtonProps) {
+export default function LoadDataButton({ setLista }: LoadDataButtonProps) {
   const [loading, setLoading] = useState(false);
 
   const API_URL = import.meta.env.VITE_APP_API_URL || "http://localhost:8000";
 
-  const carregarReclamacoes = async () => {
+  const fetchLatest = async () => {
     setLoading(true);
-
     try {
-      const res = await fetch(`${API_URL}/run-main`, { method: "POST" });
-      const data = await res.json();
-
-      if (data.status === "success") {
-
-        const latestRes = await fetch(`${API_URL}/latest`);
-        const latestData: complaint[] = await latestRes.json();
-        setLista(latestData);
-      } else {
-        alert(data.message);
-      }
+      const res = await fetch(`${API_URL}/latest`);
+      if (!res.ok) throw new Error(`Erro: ${res.status}`);
+      const data: complaint[] = await res.json();
+      setLista(data);
     } catch (err) {
       console.error(err);
       alert("Erro ao carregar as reclamações");
@@ -45,11 +37,11 @@ export default function LoadButton({ setLista }: LoadButtonProps) {
 
   return (
   <button
-    onClick={carregarReclamacoes}
+    onClick={fetchLatest}
     disabled={loading}
     className="nav-card"
   >
-    {loading ? "Executando o Cralwer..." : "Executar o Cralwer"}
+    {loading ? "Carregando..." : "Carregar novos dados"}
   </button>
   );
 }

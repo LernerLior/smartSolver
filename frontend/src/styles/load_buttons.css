@@ -1,0 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --primary-color: #333;
+  --secondary-color: #ddde;
+  --thirtiary-color: #fff;
+  --hover-color: #555;
+  --disabled-color: #aaa; 
+}
+
+.nav-card {
+  background-color: var(--hover-color);
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.3s;
+  border: none; 
+}
+
+.nav-card:hover {
+  background-color: var(--hover-color);
+}
+
+.nav-card:disabled {
+  background-color: var(--disabled-color);
+  cursor: not-allowed;
+}

@@ -14,7 +14,7 @@ type Props = {
 
 export default function PieChart({
   data,
-  width = 400,
+  width = 1080,
   height = 400,
 }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -24,8 +24,7 @@ export default function PieChart({
 
     const radius = Math.min(width, height) / 2;
     const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove(); // limpa renderizações antigas
-
+    svg.selectAll("*").remove();
     const g = svg
       .attr("width", width)
       .attr("height", height)

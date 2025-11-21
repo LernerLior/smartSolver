@@ -62,7 +62,6 @@ export default function Complaint({
   complaintText,
   numComplaints,
   complaintPercent,
-  complaintsolution,
 }: ComplaintProps) {
 
   const [loading, setLoading] = useState(false);

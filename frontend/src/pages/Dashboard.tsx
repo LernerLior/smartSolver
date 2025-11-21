@@ -1,11 +1,13 @@
 import '../styles/dashboard.css';
-import reclamacoes from '../data/complaintss.json';
 import { useNavigate } from 'react-router-dom';
 import PieChart from './PieChart';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoadButton from '../components/LoadButton';
+import LoadDataButton from '../components/LoadDataButton';
 
 type complaint = {
+  id: string;
+  pk: string;
   complaint_title: string;
   complaint_description: string;
   complaint_creation_date: string;
@@ -23,18 +25,23 @@ const dados = [
 ];
 
 export default function Dashboard() {
-  const [lista, setLista] = useState<complaint[]>(reclamacoes);
   const navegar = useNavigate();
+  const storedData = localStorage.getItem('listaReclamacoes');
+  const [lista, setLista] = useState<complaint[]>(storedData ? JSON.parse(storedData) : []);
+
+  useEffect(() => {
+    localStorage.setItem('listaReclamacoes', JSON.stringify(lista));
+  }, [lista]);
 
   const carregarbotao = (id: number) => {
     navegar(`/complaint/${id}`);
   };
+
   return (
     <div className="layout">
       <header>
         <h2>Dashboard</h2>
       </header>
-
       <aside>
         <nav>
           <ul className="nav-cards">
@@ -42,20 +49,16 @@ export default function Dashboard() {
               <LoadButton setLista={setLista} />
             </li>
             <li className="nav-card">
-              <a href="#">Configurações</a>
+              <LoadDataButton setLista={setLista} />
             </li>
-            <li className="nav-card">
-              <a href="#">Ajuda</a>
-            </li>
-            <li className="nav-card">
-              <a href="#">Perfil</a>
-            </li>
-            <li className="nav-card">
-              <a href="#">Logout</a>
-            </li>
+            <li className="nav-card"><a href="#">Configurações</a></li>
+            <li className="nav-card"><a href="#">Ajuda</a></li>
+            <li className="nav-card"><a href="#">Perfil</a></li>
+            <li className="nav-card"><a href="#">Logout</a></li>
           </ul>
         </nav>
       </aside>
+
       <main>
         <section className="graph-section">
           <h3>Gráficos</h3>
@@ -76,23 +79,29 @@ export default function Dashboard() {
               <button className="filter-btn">Filtrar</button>
             </div>
           </div>
+
           <div className="complaints-container">
-            {lista.map((reclamacao) => (
-              <div key={reclamacao.complaint_num} className="complaint-card">
-                <h4>{reclamacao.complaint_title}</h4>
-                <p className="teste">{reclamacao.complaint_description}</p>
-                <button
-                  className="read-more-btn"
-                  onClick={() => carregarbotao(reclamacao.complaint_num)}
-                >
-                  Ler mais e obter recomendações
-                </button>
+            {lista.length === 0 ? (
+              <div className="complaint-card">
+                <p>Nenhuma reclamação carregada. Clique em "Carregar novos dados".</p>
               </div>
-            ))}
+            ) : (
+              lista.map((reclamacao) => (
+                <div key={reclamacao.complaint_num} className="complaint-card">
+                  <h4>{reclamacao.complaint_title}</h4>
+                  <p className="teste">{reclamacao.complaint_description}</p>
+                  <button
+                    className="read-more-btn"
+                    onClick={() => carregarbotao(reclamacao.complaint_num)}
+                  >
+                    Ler mais e obter recomendações
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </section>
       </main>
     </div>
   );
 }
-
