@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --primary-color: #000030;
+  --secondary-color: #000070;
+  --thirtiary-color: #fff;
+  --hover-color: #555;
+}
+
+
+.layout2 {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+    'head'
+    'main2';
+  gap: 2px;
+  background-color: var(--primary-color);
+  width: auto;
+  hight: auto;
+}
+
+.head {
+  display: grid;
+  grid-area: head;
+  background-color: var(--secondary-color);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+
+.main2 {
+  display: grid;
+  grid-area: main2;
+  background-color: var(--primary-color);
+  gap: 2px;
+  border-radius: 20px;
+  overflow: auto; 
+}
+
+
+
+
+
+p{
+color:white
+}
