@@ -37,6 +37,12 @@ export default function Dashboard() {
     navegar(`/complaint/${id}`);
   };
 
+
+  const ir_para_graf= () => {
+    navegar(`/graphics`);
+  };
+
+
   return (
     <div className="layout">
       <header>
@@ -60,7 +66,7 @@ export default function Dashboard() {
       </aside>
 
       <main>
-        <section className="graph-section">
+        <section className="graph-section" onClick={() => ir_para_graf()}>
           <h3>Gráficos</h3>
           <div>
             <PieChart data={dados} />
