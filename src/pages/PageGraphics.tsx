@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 export default function PageGraphics() {
 
   return (
-<body className="layout2">
+<div className="layout2">
 	
       <header className="head">
       	<h2>PageGraphics</h2>
@@ -16,12 +16,12 @@ export default function PageGraphics() {
 
 	<main className="main2">
 		<section className="graph2">	
-      			<LineC/>
+      			<LineC />
       		</section>
       	</main>
 
 
 
-</body>
+</div>
   );
 }

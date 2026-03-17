@@ -47,7 +47,7 @@ const data = [
   },
 ];
 
-export default function LineC(isAnimationActive = true){
+export default function LineC({ isAnimationActive = true }: { isAnimationActive?: boolean }) {
 
   return (
   <LineChart
