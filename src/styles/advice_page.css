@@ -12,15 +12,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-    background-color: var(--thirtiary-color);
-    color: var(--text-color);
-    line-height: 1.6;
-    display: grid;
-    grid-template-areas:
-        "header header"
-        "main aside";
-}
+
 
 .meubody {
     background-color: var(--thirtiary-color);
@@ -33,6 +25,7 @@ body {
 }
 
 header{
+      display: flex;
     grid-area: header;
     background: var(--primary-color);
     color: var(--thirtiary-color);
