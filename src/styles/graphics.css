@@ -16,43 +16,42 @@
 .layout2 {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto;
+  grid-template-rows: 10vh 80vh;
   grid-template-areas:
-    'head'
+    'header'
     'main2';
-  gap: 2px;
   background-color: var(--primary-color);
-  width: auto;
-  hight: auto;
+  height: 100vh;
 }
 
-.head {
+
+.cab {
   display: grid;
-  grid-area: head;
-  background-color: var(--secondary-color);
+  grid-area: header;
+  background-color: var(--primary-color);
   justify-content: center;
   align-items: center;
   color: white;
   font-size: 24px;
   font-weight: bold;
-  margin: 0;
-  padding: 0;
 }
-
 
 .main2 {
-  display: grid;
-  grid-area: main2;
+  display: flex;
+  grid-area:main2;
   background-color: var(--primary-color);
   gap: 2px;
-  border-radius: 20px;
-  overflow: auto; 
+  overflow: auto;
+  justify-content: 1fr;
+  align-items: 1fr;
+
+
 }
 
 
+.graph2 {
+  display: flex;
+  overflow: auto;
 
-
-
-p{
-color:white
 }
+
