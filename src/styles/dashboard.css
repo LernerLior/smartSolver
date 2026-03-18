@@ -25,6 +25,7 @@
 }
 
 header {
+  display: flex;
   grid-area: header;
   background-color: var(--primary-color);
   padding-left: 10px;
