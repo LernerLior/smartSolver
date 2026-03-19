@@ -6,8 +6,8 @@
 }
 
 :root {
-  --primary-color: #000030;
-  --secondary-color: #000070;
+  --primary-color: #333;
+  --secondary-color: #ddde;
   --thirtiary-color: #fff;
   --hover-color: #555;
 }
@@ -20,7 +20,7 @@
   grid-template-areas:
     'header'
     'main2';
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   height: 100vh;
 }
 
@@ -39,7 +39,7 @@
 .main2 {
   display: flex;
   grid-area:main2;
-  background-color: var(--primary-color);
+  background-color: var(--thirtiary-color);
   gap: 2px;
   overflow: auto;
   justify-content: 1fr;

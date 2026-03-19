@@ -1,6 +1,8 @@
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
 import { RechartsDevtools } from '@recharts/devtools';
 
+
+
 // #region Sample data
 const data = [
   {

@@ -16,14 +16,6 @@ type complaint = {
   complaint_per: number;
 };
 
-const dados = [
-  { categoria: 'Problemas Técnicos', valor: 40 },
-  { categoria: ' Serviço', valor: 25 },
-  { categoria: 'Atendimento', valor: 20 },
-  { categoria: 'Manutenção', valor: 15 },
-  { categoria: 'Outros', valor: 15 },
-];
-
 export default function Dashboard() {
   const navegar = useNavigate();
   const storedData = localStorage.getItem('listaReclamacoes');
@@ -69,7 +61,6 @@ export default function Dashboard() {
         <section className="graph-section" onClick={() => ir_para_graf()}>
           <h3>Gráficos</h3>
           <div>
-            <PieChart data={dados} />
           </div>
         </section>
 

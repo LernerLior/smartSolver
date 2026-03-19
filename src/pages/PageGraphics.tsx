@@ -10,7 +10,7 @@ export default function PageGraphics() {
 <div className="layout2">
 	
       <header className="cab">
-      	<h2>PageGraphics</h2>
+      	<h2>Gráficos</h2>
       </header>
 
 
