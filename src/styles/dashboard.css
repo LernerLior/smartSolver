@@ -73,6 +73,10 @@ p {
   border-radius: 20px;
   padding: 1rem;
   transition: background-color .4s;
+  justify-content: center;
+  align-items: center; 
+  height: auto;
+  width: auto;
 }
 
 .reclamation-header {
