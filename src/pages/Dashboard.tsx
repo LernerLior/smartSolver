@@ -1,9 +1,9 @@
 import '../styles/dashboard.css';
 import { useNavigate } from 'react-router-dom';
-import PieChart from './PieChart';
 import { useState, useEffect } from 'react';
 import LoadButton from '../components/LoadButton';
 import LoadDataButton from '../components/LoadDataButton';
+import CustomActiveShapePieChart from '../components/Graphic';
 
 type complaint = {
   id: string;
@@ -49,10 +49,6 @@ export default function Dashboard() {
             <li className="nav-card">
               <LoadDataButton setLista={setLista} />
             </li>
-            <li className="nav-card"><a href="#">Configurações</a></li>
-            <li className="nav-card"><a href="#">Ajuda</a></li>
-            <li className="nav-card"><a href="#">Perfil</a></li>
-            <li className="nav-card"><a href="#">Logout</a></li>
           </ul>
         </nav>
       </aside>
@@ -61,6 +57,8 @@ export default function Dashboard() {
         <section className="graph-section" onClick={() => ir_para_graf()}>
           <h3>Gráficos</h3>
           <div>
+		<CustomActiveShapePieChart />
+
           </div>
         </section>
 
