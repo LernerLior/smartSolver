@@ -8,7 +8,7 @@
 :root {
   --primary-color: #333;
   --secondary-color: #ddde;
-  --thirtiary-color: #fff;
+  --thirtiary-color: #EDF4F5;
   --hover-color: #555;
 }
 
@@ -44,7 +44,7 @@
   justify-content: 1fr;
   align-items: 1fr;
   height: 90vh;
-  background-color: var(--secondary-color);
+  background-color: var(--thirtiary-color);
 
 }
 
@@ -52,7 +52,8 @@
 .graph2 {
   display: flex;
   overflow: auto;
-  background-color: var(--thirtiary-color);
+
+  background-color: var(--secondary-color);
   width:100vh;
   height:auto;	
   justify-content: center;
