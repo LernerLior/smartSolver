@@ -72,6 +72,7 @@ p {
   background-color: var(--secondary-color);
   border-radius: 20px;
   padding: 1rem;
+  transition: background-color .4s;
 }
 
 .reclamation-header {
@@ -200,3 +201,13 @@ p {
   background-color: var(--hover-color);
   border-radius: 8px;
 }
+
+
+
+.graph-section:hover {
+  grid-area: graphs;
+  background-color: grey;
+  border-radius: 20px;
+  padding: 1rem;
+}
+
