@@ -1,6 +1,6 @@
 import '../styles/graphics.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import LineC from './Graphics';
+import LineC from '../components/Graphic_line';
 import { useMemo } from 'react';
 
 
