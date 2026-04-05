@@ -90,7 +90,7 @@ export default function Complaint({
         )}
 
         <div style={{ marginTop: "20px" }}>
-          <button onClick={handleClick} disabled={loading}>
+          <button onClick={handleClick} disabled={loading} className="back-button">
             {loading ? "Gerando..." : "Gerar Solução com IA"}
           </button>
         </div>
