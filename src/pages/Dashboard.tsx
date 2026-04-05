@@ -4,36 +4,24 @@ import { useState, useEffect } from 'react';
 import LoadButton from '../components/LoadButton';
 import LoadDataButton from '../components/LoadDataButton';
 import CustomActiveShapePieChart from '../components/Graphic';
-
-type complaint = {
-  id: string;
-  pk: string;
-  complaint_title: string;
-  complaint_description: string;
-  complaint_creation_date: string;
-  complaint_solution: string;
-  complaint_num: number;
-  complaint_per: number;
-};
+import type { Complaint } from '../types/complaint';
 
 export default function Dashboard() {
   const navegar = useNavigate();
   const storedData = localStorage.getItem('listaReclamacoes');
-  const [lista, setLista] = useState<complaint[]>(storedData ? JSON.parse(storedData) : []);
+  const [lista, setLista] = useState<Complaint[]>(storedData ? JSON.parse(storedData) : []);
 
   useEffect(() => {
     localStorage.setItem('listaReclamacoes', JSON.stringify(lista));
   }, [lista]);
 
-  const carregarbotao = (id: number) => {
+  const carregarbotao = (id: string) => {
     navegar(`/complaint/${id}`);
   };
 
-
-  const ir_para_graf= () => {
+  const ir_para_graf = () => {
     navegar(`/graphics`);
   };
-
 
   return (
     <div className="layout">
@@ -49,27 +37,23 @@ export default function Dashboard() {
             <li className="nav-card">
               <LoadDataButton setLista={setLista} />
             </li>
+            <li className="graph-section" onClick={() => ir_para_graf()}>
+              <h4>Gráficos</h4>
+              <CustomActiveShapePieChart />
+            </li>
           </ul>
         </nav>
       </aside>
 
       <main>
-        <section className="graph-section" onClick={() => ir_para_graf()}>
-          <h3>Gráficos</h3>
-          <div>
-		<CustomActiveShapePieChart />
-
-          </div>
-        </section>
-
         <section className="complaint-section">
           <div className="reclamation-header">
             <h3>Reclamações</h3>
             <div className="search-filter-container">
-              <input 
-                type="text" 
-                placeholder="Pesquisar..." 
-                className="search-bar" 
+              <input
+                type="text"
+                placeholder="Pesquisar..."
+                className="search-bar"
               />
               <button className="filter-btn">Filtrar</button>
             </div>
@@ -82,12 +66,12 @@ export default function Dashboard() {
               </div>
             ) : (
               lista.map((reclamacao) => (
-                <div key={reclamacao.complaint_num} className="complaint-card">
+                <div key={reclamacao.id} className="complaint-card">
                   <h4>{reclamacao.complaint_title}</h4>
                   <p className="teste">{reclamacao.complaint_description}</p>
                   <button
                     className="read-more-btn"
-                    onClick={() => carregarbotao(reclamacao.complaint_num)}
+                    onClick={() => carregarbotao(reclamacao.id)}
                   >
                     Ler mais e obter recomendações
                   </button>

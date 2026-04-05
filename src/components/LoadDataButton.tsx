@@ -1,18 +1,8 @@
 import { useState } from "react";
-
-type complaint = {
-  id: string;
-  pk: string;
-  complaint_title: string;
-  complaint_description: string;
-  complaint_creation_date: string;
-  complaint_solution: string;
-  complaint_num: number;
-  complaint_per: number;
-};
+import type { Complaint } from '../types/complaint';
 
 type LoadDataButtonProps = {
-  setLista: (data: complaint[]) => void;
+  setLista: (data: Complaint[]) => void;
 };
 
 export default function LoadDataButton({ setLista }: LoadDataButtonProps) {
@@ -25,7 +15,7 @@ export default function LoadDataButton({ setLista }: LoadDataButtonProps) {
     try {
       const res = await fetch(`${API_URL}/latest`);
       if (!res.ok) throw new Error(`Erro: ${res.status}`);
-      const data: complaint[] = await res.json();
+      const data: Complaint[] = await res.json();
       setLista(data);
     } catch (err) {
       console.error(err);
@@ -36,12 +26,8 @@ export default function LoadDataButton({ setLista }: LoadDataButtonProps) {
   };
 
   return (
-  <button
-    onClick={fetchLatest}
-    disabled={loading}
-    className="nav-card"
-  >
-    {loading ? "Carregando..." : "Carregar novos dados"}
-  </button>
+    <button onClick={fetchLatest} disabled={loading} className="nav-card">
+      {loading ? "Carregando..." : "Carregar novos dados"}
+    </button>
   );
 }

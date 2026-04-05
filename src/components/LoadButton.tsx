@@ -1,18 +1,9 @@
 import { useState } from "react";
 import '../styles/load_buttons.css';
-type complaint = {
-  id: string;
-  pk: string;
-  complaint_title: string;
-  complaint_description: string;
-  complaint_creation_date: string;
-  complaint_solution: string;
-  complaint_num: number;
-  complaint_per: number;
-};
+import type { Complaint } from '../types/complaint';
 
 type LoadButtonProps = {
-  setLista: (data: complaint[]) => void;
+  setLista: (data: Complaint[]) => void;
 };
 
 export default function LoadButton({ setLista }: LoadButtonProps) {
@@ -22,15 +13,13 @@ export default function LoadButton({ setLista }: LoadButtonProps) {
 
   const carregarReclamacoes = async () => {
     setLoading(true);
-
     try {
       const res = await fetch(`${API_URL}/run-main`, { method: "POST" });
       const data = await res.json();
 
       if (data.status === "success") {
-
         const latestRes = await fetch(`${API_URL}/latest`);
-        const latestData: complaint[] = await latestRes.json();
+        const latestData: Complaint[] = await latestRes.json();
         setLista(latestData);
       } else {
         alert(data.message);
@@ -44,12 +33,8 @@ export default function LoadButton({ setLista }: LoadButtonProps) {
   };
 
   return (
-  <button
-    onClick={carregarReclamacoes}
-    disabled={loading}
-    className="nav-card"
-  >
-    {loading ? "Executando o Cralwer..." : "Executar o Cralwer"}
-  </button>
+    <button onClick={carregarReclamacoes} disabled={loading} className="nav-card">
+      {loading ? "Executando o Crawler..." : "Executar o Crawler"}
+    </button>
   );
 }
