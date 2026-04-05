@@ -79,10 +79,10 @@ export default function CustomActiveShapePieChart({
       style={{ width: '100%', maxWidth: '500px', maxHeight: '80vh', aspectRatio: 1 }}
       responsive
       margin={{
-        top: 50,
-        right: 120,
+        top: 2,
+        right: 2,
         bottom: 0,
-        left: 120,
+        left: 2,
       }}
     >
       <Pie
