@@ -38,8 +38,9 @@
 
 .main2 {
   display: flex;
+  flex-direction: row;
   grid-area:main2;
-  gap: 2px;
+  gap: 30px;
   overflow: auto;
   justify-content: 1fr;
   align-items: 1fr;
@@ -52,10 +53,9 @@
 .graph2 {
   display: flex;
   overflow: auto;
-
-  background-color: var(--secondary-color);
+  background-color: var(--thirtiary-color);
   width:100vh;
-  height:auto;	
+  height:65vh;	
   justify-content: center;
   align-items: center;
   gap: auto;
