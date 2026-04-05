@@ -1,6 +1,7 @@
 import '../styles/graphics.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import LineC from '../components/Graphic_line';
+import Pie from '../components/Graphic_2';
 import { useMemo } from 'react';
 
 
@@ -18,6 +19,11 @@ export default function PageGraphics() {
 		<section className="graph2">	
       			<LineC />
       		</section>
+
+		<section className="graph2">	
+			<Pie />
+      		</section>
+
       	</main>
 
 
