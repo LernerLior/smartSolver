@@ -1,9 +1,14 @@
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
 import { useEffect, useState } from 'react';
 
-type CategoryData = {
+type CategoryEntry = {
   category: string;
-  total: number;
+  total: string;
+};
+
+type DateEntry = {
+  date: string;
+  categories: CategoryEntry[];
 };
 
 const COLORS = ['#8884d8', '#82ca9d', '#ff7300', '#0088fe', '#ff0080', '#00C49F', '#FFBB28'];
@@ -17,21 +22,27 @@ export default function LineC({ isAnimationActive = true }: { isAnimationActive?
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${API_URL}/categories`);
-        const data: CategoryData[] = await res.json();
+        const res = await fetch(`${API_URL}/categories-by-date`);
+        const data: DateEntry[] = await res.json();
 
-        const cats = data.map((d) => d.category);
-        setCategories(cats);
+        // Coleta todas as categorias únicas
+        const allCategories = Array.from(
+          new Set(data.flatMap((d) => d.categories.map((c) => c.category)))
+        );
+        setCategories(allCategories);
 
-        // Cada categoria vira um ponto no eixo X com seu total
-        const formatted = data.map((d) => ({
-          name: d.category,
-          [d.category]: d.total,
-        }));
+        // Cada ponto no eixo X é uma data, com o total de cada categoria
+        const formatted = data.map((entry) => {
+          const point: Record<string, string | number> = { date: entry.date };
+          for (const cat of entry.categories) {
+            point[cat.category] = Number(cat.total);
+          }
+          return point;
+        });
 
         setChartData(formatted);
       } catch (err) {
-        console.error('Erro ao buscar categorias:', err);
+        console.error('Erro ao buscar categorias por data:', err);
       }
     };
 
@@ -45,7 +56,7 @@ export default function LineC({ isAnimationActive = true }: { isAnimationActive?
       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
+      <XAxis dataKey="date" />
       <YAxis />
       <Tooltip />
       <Legend />
