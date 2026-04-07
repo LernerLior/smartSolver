@@ -104,6 +104,7 @@ p {
   border: 1px solid #ccc;
   width: 200px;
   font-size: 1rem;
+  color: var(--thirtiary-color);
   background-color: var(--primary-color);
 }
 
