@@ -64,7 +64,7 @@ export default function Dashboard() {
           <div className="complaints-container">
             {lista.length === 0 ? (
               <div className="complaint-card">
-                <p>Nenhuma reclamação carregada. Clique em "Carregar novos dados".</p>
+                <p>Nenhuma reclamação carregada. Clique em "Atualizar dados".</p>
               </div>
             ) : (
               lista.map((reclamacao) => (
