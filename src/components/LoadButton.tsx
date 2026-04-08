@@ -34,7 +34,7 @@ export default function LoadButton({ setLista }: LoadButtonProps) {
 
   return (
     <button onClick={carregarReclamacoes} disabled={loading} className="nav-card">
-      {loading ? "Executando o Crawler..." : "Executar o Crawler"}
+      {loading ? "Buscando novos dados..." : "Buscar novos dados"}
     </button>
   );
 }

@@ -37,9 +37,11 @@ export default function Dashboard() {
             <li className="nav-card">
               <LoadDataButton setLista={setLista} />
             </li>
-            <li className="graph-section" onClick={() => ir_para_graf()}>
+            <li className="nav-card" onClick={() => ir_para_graf()}>
+              <div className="button">
               <h4>Gráficos</h4>
               <CustomActiveShapePieChart />
+              </div>
             </li>
           </ul>
         </nav>

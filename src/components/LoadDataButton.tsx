@@ -27,7 +27,7 @@ export default function LoadDataButton({ setLista }: LoadDataButtonProps) {
 
   return (
     <button onClick={fetchLatest} disabled={loading} className="nav-card">
-      {loading ? "Carregando..." : "Carregar novos dados"}
+      {loading ? "Atualizando..." : "Atualizar dados"}
     </button>
   );
 }

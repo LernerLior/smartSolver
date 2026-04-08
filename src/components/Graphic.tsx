@@ -1,4 +1,4 @@
-import { Pie, PieChart, Sector, Tooltip} from 'recharts';
+import { Pie, PieChart, Sector, Tooltip, type PieSectorDataItem, type TooltipIndex} from 'recharts';
 import { RechartsDevtools } from '@recharts/devtools';
 
 // #region Sample data
@@ -92,7 +92,7 @@ export default function CustomActiveShapePieChart({
         cy="50%"
         innerRadius="60%"
         outerRadius="80%"
-        fill="#8884d8"
+        fill="var(--primary-color)"
         dataKey="value"
         isAnimationActive={isAnimationActive}
       />

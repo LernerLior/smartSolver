@@ -1,7 +1,7 @@
 import '../styles/graphics.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import LineC from '../components/Graphic_line';
-import Pie from '../components/Graphic_2';
+import Pie from '../components/Graphic_pie';
 import { useMemo } from 'react';
 
 

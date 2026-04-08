@@ -1,6 +1,6 @@
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
 import { useEffect, useState } from 'react';
-
+import '../styles/graphics.css';
 type CategoryEntry = {
   category: string;
   total: string;
@@ -50,6 +50,8 @@ export default function LineC({ isAnimationActive = true }: { isAnimationActive?
   }, []);
 
   return (
+    <div style={{ width: '100%', maxWidth: '700px' }}>
+    <h2 className="title">Categorias X Tempo</h2>
     <LineChart
       style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
       data={chartData}
@@ -70,5 +72,6 @@ export default function LineC({ isAnimationActive = true }: { isAnimationActive?
         />
       ))}
     </LineChart>
+    </div>
   );
 }
