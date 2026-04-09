@@ -21,12 +21,23 @@ export default function PageComplaint() {
 
   useEffect(() => {
     if (!idParam) return;
+
+    const cached = sessionStorage.getItem(`complaint_${idParam}`);
+    if (cached) {
+      setReclamacao(JSON.parse(cached));
+      setLoading(false);
+      return;
+    }
+
     fetch(`${API_URL}/complaint/${idParam}`)
       .then((res) => {
         if (!res.ok) throw new Error('Não encontrado');
         return res.json();
       })
-      .then(setReclamacao)
+      .then((data) => {
+        sessionStorage.setItem(`complaint_${idParam}`, JSON.stringify(data));
+        setReclamacao(data);
+      })
       .catch(() => setReclamacao(null))
       .finally(() => setLoading(false));
   }, [idParam]);

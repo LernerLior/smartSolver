@@ -11,16 +11,36 @@ const PER_PAGE = 6;
 
 export default function Dashboard() {
   const navegar = useNavigate();
-  const [lista, setLista] = useState<Complaint[]>([]);
+
+  const [lista, setLista] = useState<Complaint[]>(() => {
+    const cached = sessionStorage.getItem('complaints_page_1');
+    return cached ? JSON.parse(cached).items : [];
+  });
+
+  const [totalPages, setTotalPages] = useState<number>(() => {
+    const cached = sessionStorage.getItem('complaints_page_1');
+    return cached ? JSON.parse(cached).pages : 1;
+  });
+
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const fetchComplaints = async (p: number) => {
+    const cacheKey = `complaints_page_${p}`;
+    const cached = sessionStorage.getItem(cacheKey);
+
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      setLista(parsed.items);
+      setTotalPages(parsed.pages);
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(`${API_URL}/latest?n=${PER_PAGE}&page=${p}`);
       const data = await res.json();
+      sessionStorage.setItem(cacheKey, JSON.stringify(data));
       setLista(data.items);
       setTotalPages(data.pages);
     } catch (err) {
@@ -85,7 +105,6 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* Paginação */}
           <div className="pagination">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
               &lt;
