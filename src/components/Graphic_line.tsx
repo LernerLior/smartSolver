@@ -1,6 +1,7 @@
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
 import { useEffect, useState } from 'react';
 import '../styles/graphics.css';
+
 type CategoryEntry = {
   category: string;
   total: string;
