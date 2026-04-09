@@ -39,7 +39,7 @@ async function AIAnalysis(complaintTitle: string, complaintText: string) {
   const prompt = `${instruction}\nReclamação: ${complaintTitle}\nTexto: ${complaintText}`;
 
   const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash-001",
+    model: "gemini-3-flash-preview",
     contents: prompt,
   });
 
