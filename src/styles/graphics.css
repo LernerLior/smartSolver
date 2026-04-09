@@ -12,61 +12,64 @@
   --hover-color: #555;
 }
 
-
+/* ── Layout principal ── */
 .layout2 {
   display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 10vh 80vh;
+  grid-template-rows: 10vh 90vh;
   grid-template-areas:
     'header'
     'main2';
   height: 100vh;
+  overflow: hidden;
 }
 
-
+/* ── Cabeçalho ── */
 .cab {
-  display: grid;
   grid-area: header;
-  background-color: var(--primary-color);
+  display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--primary-color);
   color: white;
   font-size: 24px;
   font-weight: bold;
-  height: 10vh;
 }
 
+/* ── Área dos gráficos ── */
 .main2 {
+  grid-area: main2;
   display: flex;
   flex-direction: row;
-  grid-area:main2;
-  gap: 30px;
-  overflow: auto;
-  justify-content: 1fr;
-  align-items: 1fr;
-  height: 90vh;
+  flex-wrap: wrap;       
+  gap: 24px;
+  padding: 32px;
   background-color: var(--thirtiary-color);
-
+  overflow: auto;         
 }
 
-
+/* ── Card de cada gráfico ── */
 .graph2 {
+  flex: 1 1 calc(50% - 12px); 
+  min-width: 320px;            
+  min-height: 350px;
   display: flex;
-  overflow: auto;
-  background-color: var(--thirtiary-color);
-  width:100vh;
-  height:65vh;	
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: auto;
-  padding:auto;
-  margin:auto;
+  justify-content: center;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px 16px 16px;
+  min-width: 0; /* evita overflow em flex */
+  overflow: hidden;
 }
 
+/* ── Título dos gráficos ── */
 .title {
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   color: var(--primary-color);
   font-size: 18px;
   font-weight: bold;
+  width: 100%;
 }

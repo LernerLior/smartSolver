@@ -1,4 +1,4 @@
-import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
+import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
 import '../styles/graphics.css';
 
@@ -26,13 +26,11 @@ export default function LineC({ isAnimationActive = true }: { isAnimationActive?
         const res = await fetch(`${API_URL}/categories-by-date`);
         const data: DateEntry[] = await res.json();
 
-        // Coleta todas as categorias únicas
         const allCategories = Array.from(
           new Set(data.flatMap((d) => d.categories.map((c) => c.category)))
         );
         setCategories(allCategories);
 
-        // Cada ponto no eixo X é uma data, com o total de cada categoria
         const formatted = data.map((entry) => {
           const point: Record<string, string | number> = { date: entry.date };
           for (const cat of entry.categories) {
@@ -51,28 +49,27 @@ export default function LineC({ isAnimationActive = true }: { isAnimationActive?
   }, []);
 
   return (
-    <div style={{ width: '100%', maxWidth: '700px' }}>
-    <h2 className="title">Categorias X Tempo</h2>
-    <LineChart
-      style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
-      data={chartData}
-      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      {categories.map((cat, i) => (
-        <Line
-          key={cat}
-          type="monotone"
-          dataKey={cat}
-          stroke={COLORS[i % COLORS.length]}
-          isAnimationActive={isAnimationActive}
-        />
-      ))}
-    </LineChart>
-    </div>
+    <>
+      <h2 className="title">Reclamações ao longo do tempo</h2>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={chartData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+          <YAxis tick={{ fontSize: 12 }} />
+          <Tooltip />
+          <Legend />
+          {categories.map((cat, i) => (
+            <Line
+              key={cat}
+              type="monotone"
+              dataKey={cat}
+              stroke={COLORS[i % COLORS.length]}
+              dot={{ r: 4 }}
+              isAnimationActive={isAnimationActive}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </>
   );
 }
