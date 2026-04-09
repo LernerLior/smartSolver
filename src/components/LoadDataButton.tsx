@@ -15,8 +15,8 @@ export default function LoadDataButton({ setLista }: LoadDataButtonProps) {
     try {
       const res = await fetch(`${API_URL}/latest`);
       if (!res.ok) throw new Error(`Erro: ${res.status}`);
-      const data: Complaint[] = await res.json();
-      setLista(data);
+      const data = await res.json();
+      setLista(data.items); // ← era data, agora é data.items
     } catch (err) {
       console.error(err);
       alert("Erro ao carregar as reclamações");

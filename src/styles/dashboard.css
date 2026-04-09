@@ -55,11 +55,11 @@ main {
   grid-template-areas: "complaints";
   gap: 2px;
   border-radius: 20px;
-  overflow: auto; 
-  width: 100%;    
-  min-height: 400px; 
-
+  overflow: auto;
+  width: 100%;
+  min-height: 400px;
 }
+
 p {
   width: auto;
   overflow: hidden;
@@ -74,15 +74,18 @@ p {
   padding: 1rem;
   transition: background-color .4s;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   height: auto;
   width: auto;
+}
 
+.graph-section:hover {
+  background-color: grey;
 }
 
 .reclamation-header {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
@@ -94,7 +97,7 @@ p {
 
 .search-filter-container {
   display: flex;
-  gap: 0.5rem; /* espaço entre input e botão */
+  gap: 0.5rem;
   align-items: center;
 }
 
@@ -128,7 +131,6 @@ p {
   background-color: var(--secondary-color);
   border-radius: 20px;
   padding: 1rem;
-
 }
 
 .complaints-container {
@@ -137,7 +139,6 @@ p {
   gap: 1rem;
   margin-top: 1rem;
   flex-direction: column;
-
 }
 
 .complaint-card {
@@ -156,10 +157,10 @@ p {
 }
 
 .complaint-card p {
-  width: 100%;       
-  white-space: nowrap;    
-  overflow: hidden;      
-  text-overflow: ellipsis; 
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .read-more-btn {
@@ -208,12 +209,39 @@ p {
   border-radius: 8px;
 }
 
-
-
-.graph-section:hover {
-  grid-area: graphs;
-  background-color: grey;
-  border-radius: 20px;
-  padding: 1rem;
+/* ── Paginação ── */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0 8px;
 }
 
+.pagination button {
+  border: 1px solid var(--primary-color);
+  background: var(--thirtiary-color);
+  color: var(--primary-color);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.pagination button.active {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

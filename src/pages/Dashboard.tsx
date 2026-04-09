@@ -6,22 +6,36 @@ import LoadDataButton from '../components/LoadDataButton';
 import CustomActiveShapePieChart from '../components/Graphic';
 import type { Complaint } from '../types/complaint';
 
+const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8000';
+const PER_PAGE = 6;
+
 export default function Dashboard() {
   const navegar = useNavigate();
-  const storedData = localStorage.getItem('listaReclamacoes');
-  const [lista, setLista] = useState<Complaint[]>(storedData ? JSON.parse(storedData) : []);
+  const [lista, setLista] = useState<Complaint[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const fetchComplaints = async (p: number) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/latest?n=${PER_PAGE}&page=${p}`);
+      const data = await res.json();
+      setLista(data.items);
+      setTotalPages(data.pages);
+    } catch (err) {
+      console.error('Erro ao buscar reclamações:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem('listaReclamacoes', JSON.stringify(lista));
-  }, [lista]);
+    fetchComplaints(page);
+  }, [page]);
 
-  const carregarbotao = (id: string) => {
-    navegar(`/complaint/${id}`);
-  };
-
-  const ir_para_graf = () => {
-    navegar(`/graphics`);
-  };
+  const carregarbotao = (id: string) => navegar(`/complaint/${id}`);
+  const ir_para_graf = () => navegar(`/graphics`);
 
   return (
     <div className="layout">
@@ -31,16 +45,12 @@ export default function Dashboard() {
       <aside>
         <nav>
           <ul className="nav-cards">
-            <li className="nav-card">
-              <LoadButton setLista={setLista} />
-            </li>
-            <li className="nav-card">
-              <LoadDataButton setLista={setLista} />
-            </li>
-            <li className="nav-card" onClick={() => ir_para_graf()}>
+            <li className="nav-card"><LoadButton setLista={setLista} /></li>
+            <li className="nav-card"><LoadDataButton setLista={setLista} /></li>
+            <li className="nav-card" onClick={ir_para_graf}>
               <div className="button">
-              <h4>Gráficos</h4>
-              <CustomActiveShapePieChart />
+                <h4>Gráficos</h4>
+                <CustomActiveShapePieChart />
               </div>
             </li>
           </ul>
@@ -52,34 +62,48 @@ export default function Dashboard() {
           <div className="reclamation-header">
             <h3>Reclamações</h3>
             <div className="search-filter-container">
-              <input
-                type="text"
-                placeholder="Pesquisar..."
-                className="search-bar"
-              />
+              <input type="text" placeholder="Pesquisar..." className="search-bar" />
               <button className="filter-btn">Filtrar</button>
             </div>
           </div>
 
           <div className="complaints-container">
-            {lista.length === 0 ? (
-              <div className="complaint-card">
-                <p>Nenhuma reclamação carregada. Clique em "Atualizar dados".</p>
-              </div>
+            {loading ? (
+              <div className="complaint-card"><p>Carregando...</p></div>
+            ) : lista.length === 0 ? (
+              <div className="complaint-card"><p>Nenhuma reclamação encontrada.</p></div>
             ) : (
               lista.map((reclamacao) => (
                 <div key={reclamacao.id} className="complaint-card">
                   <h4>{reclamacao.complaint_title}</h4>
                   <p className="teste">{reclamacao.complaint_description}</p>
-                  <button
-                    className="read-more-btn"
-                    onClick={() => carregarbotao(reclamacao.id)}
-                  >
+                  <button className="read-more-btn" onClick={() => carregarbotao(reclamacao.id)}>
                     Ler mais e obter recomendações
                   </button>
                 </div>
               ))
             )}
+          </div>
+
+          {/* Paginação */}
+          <div className="pagination">
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+              &lt;
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                className={page === p ? 'active' : ''}
+              >
+                {p}
+              </button>
+            ))}
+
+            <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
+              &gt;
+            </button>
           </div>
         </section>
       </main>
