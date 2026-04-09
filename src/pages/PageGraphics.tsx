@@ -23,9 +23,7 @@ export default function PageGraphics() {
       		</section>
 
       	</main>
-
-
-
+		
 </div>
   );
 }
