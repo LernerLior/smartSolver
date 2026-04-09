@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import Complaint from './Complaint';
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
+
+const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8000';
 
 type Row = {
   complaint_title: string;
@@ -14,14 +16,22 @@ type Row = {
 export default function PageComplaint() {
   const navegacao = useNavigate();
   const { id: idParam } = useParams<{ id: string }>();
+  const [reclamacao, setReclamacao] = useState<Row | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const reclamacao = useMemo(() => {
-    if (!idParam) return undefined;
-    const stored = localStorage.getItem('listaReclamacoes');
-    if (!stored) return undefined;
-    const lista: Row[] = JSON.parse(stored);
-    return lista.find((r) => String(r.id) === String(idParam));
+  useEffect(() => {
+    if (!idParam) return;
+    fetch(`${API_URL}/complaint/${idParam}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Não encontrado');
+        return res.json();
+      })
+      .then(setReclamacao)
+      .catch(() => setReclamacao(null))
+      .finally(() => setLoading(false));
   }, [idParam]);
+
+  if (loading) return <p>Carregando...</p>;
 
   if (!reclamacao) {
     return (
