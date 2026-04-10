@@ -1,27 +1,50 @@
 import React from 'react';
 import '../styles/advice_page.css';
-import { GoogleGenAI } from '@google/genai';
 import { useState } from 'react';
 
-function BoldTextWithLineBreaks({ text }: { text: string }) {
-  const boldParts = text.split(/\*\*(.*?)\*\*/g);
+const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8000';
+
+function FormattedText({ text }: { text: string }) {
+  const lines = text.split('\n');
 
   return (
     <>
-      {boldParts.map((part: string, i: number) => {
-        const lines = part.split('\n');
-        return lines.map((line: string, j: number) => {
-          const content = i % 2 === 1 ? <strong key={j}>{line}</strong> : line;
-          return (
-            <React.Fragment key={`${i}-${j}`}>
-              {content}
-              {j < lines.length - 1 && <br />}
-            </React.Fragment>
-          );
-        });
+      {lines.map((line, i) => {
+        // ### Título
+        if (line.startsWith('### ')) {
+          return <h3 key={i}>{parseInline(line.slice(4))}</h3>;
+        }
+        // #### Subtítulo
+        if (line.startsWith('#### ')) {
+          return <h4 key={i}>{parseInline(line.slice(5))}</h4>;
+        }
+        // * Item de lista
+        if (line.startsWith('* ')) {
+          return <li key={i}>{parseInline(line.slice(2))}</li>;
+        }
+        // Linha vazia
+        if (line.trim() === '') {
+          return <br key={i} />;
+        }
+        // Parágrafo normal
+        return <p key={i}>{parseInline(line)}</p>;
       })}
     </>
   );
+}
+
+// Processa negrito e itálico inline
+function parseInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith('*') && part.endsWith('*')) {
+      return <em key={i}>{part.slice(1, -1)}</em>;
+    }
+    return part;
+  });
 }
 
 type ComplaintProps = {
@@ -31,19 +54,15 @@ type ComplaintProps = {
   complaintcategory: string;
 };
 
-async function AIAnalysis(complaintTitle: string, complaintText: string) {
-  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GOOGLE_API_KEY });
-  const instruction =
-    "Você é um assistente que ajuda a analisar dados de reclamações de clientes. Forneça insights úteis e sugestões de fácil entendimento com base nos dados fornecidos. Seja breve e preciso, mas apresente detalhes suficientes para que as recomendações possam ser implementadas, principalmente nas de maior importância";
-
-  const prompt = `${instruction}\nReclamação: ${complaintTitle}\nTexto: ${complaintText}`;
-
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
+async function AIAnalysis(complaintTitle: string, complaintText: string): Promise<string> {
+  const res = await fetch(`${API_URL}/ai-analysis`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: complaintTitle, text: complaintText }),
   });
 
-  return response.text ?? "Desculpe, não foi possível gerar uma solução no momento.";
+  const data = await res.json();
+  return data.solution ?? 'Desculpe, não foi possível gerar uma solução no momento.';
 }
 
 export default function Complaint({
@@ -57,9 +76,15 @@ export default function Complaint({
 
   const handleClick = async () => {
     setLoading(true);
-    const aiSolution = await AIAnalysis(complaintTitle, complaintText);
-    setSolution(aiSolution);
-    setLoading(false);
+    try {
+      const aiSolution = await AIAnalysis(complaintTitle, complaintText);
+      setSolution(aiSolution);
+    } catch (err) {
+      console.error(err);
+      setSolution('Erro ao gerar solução. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -85,7 +110,7 @@ export default function Complaint({
 
         {solution && (
           <div className="solution">
-            <BoldTextWithLineBreaks text={solution} />
+            <FormattedText text={solution} />
           </div>
         )}
 
