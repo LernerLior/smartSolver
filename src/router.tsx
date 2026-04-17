@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import PageComplaint from './pages/PageComplaint'
 import PageGraphics from './pages/PageGraphics'
+import ImportantComplaints from './pages/ImportantComplaints'
 
 export default function AppRoutes() {
   return (
@@ -9,6 +10,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Dashboard/>} />
       <Route path="/complaint/:id" element={<PageComplaint/>} />
       <Route path="/graphics" element={<PageGraphics/>} />
+      <Route path="/importantcomplaints" element={<ImportantComplaints/>} />
     </Routes>
   )
 }
