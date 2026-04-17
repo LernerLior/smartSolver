@@ -56,6 +56,7 @@ export default function Dashboard() {
 
   const carregarbotao = (id: string) => navegar(`/complaint/${id}`);
   const ir_para_graf = () => navegar(`/graphics`);
+  const ir_para_important_complaints = () => navegar(`/importantcomplaints`);
 
   return (
     <div className="layout">
@@ -73,6 +74,7 @@ export default function Dashboard() {
                 <CustomActiveShapePieChart />
               </div>
             </li>
+	    <li className="nav-card" onClick={ir_para_important_complaints}></li>
           </ul>
         </nav>
       </aside>
