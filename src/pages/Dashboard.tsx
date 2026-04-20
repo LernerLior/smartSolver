@@ -74,7 +74,11 @@ export default function Dashboard() {
                 <CustomActiveShapePieChart />
               </div>
             </li>
-	    <li className="nav-card" onClick={ir_para_important_complaints}></li>
+	    <li className="nav-card" onClick={ir_para_important_complaints}>
+              <div className="button">
+                <h4>Reclamções urgentes</h4>
+              </div>	
+	    </li>
           </ul>
         </nav>
       </aside>
