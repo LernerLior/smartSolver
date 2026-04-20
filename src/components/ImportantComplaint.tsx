@@ -25,7 +25,7 @@ export default function ImportantComplaint(props : ComplaintProps){
 
 	return (
 
-		<div>
+		<div className="complaint-card">
 		
 			{props.complaint_importance == 5 ? 
 			(<div><h4>{props.complaint_title}</h4>
