@@ -1,4 +1,4 @@
-export type Complaint = {
+export interface Complaint {
   id: string;
   pk: string;
   complaint_title: string;
@@ -6,4 +6,5 @@ export type Complaint = {
   complaint_creation_date: string;
   complaint_solution: string;
   complaint_category: string;
+  complaint_category: number;
 };
