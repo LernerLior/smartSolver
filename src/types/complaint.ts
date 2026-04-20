@@ -6,5 +6,5 @@ export interface Complaint {
   complaint_creation_date: string;
   complaint_solution: string;
   complaint_category: string;
-  complaint_category: number;
+  complaint_importance: number;
 };
