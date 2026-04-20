@@ -86,7 +86,7 @@ export default function CustomActiveShapePieChart({
       }}
     >
       <Pie
-        activeShape={renderActiveShape}
+        // activeShape= {renderActiveShape}
         data={data}
         cx="50%"
         cy="50%"
