@@ -29,7 +29,7 @@ export default function ImportantComplaints() {
   return (
     <div className="layout2">
       <header className="cab">
-        <h2>Gráficos</h2>
+        <h2>Reclamações urgentes</h2>
       </header>
 
       <main className="main2">
