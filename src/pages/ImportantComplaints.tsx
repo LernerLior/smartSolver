@@ -37,12 +37,12 @@ export default function ImportantComplaints() {
 	<div className="complaints-container">
 		{complaints_list === 0 ? (<div className="complaint-card"><p>Nenhuma reclamação encontrada.</p></div>)
 		: (complaints_list.map(function(item){
-		
+			return(
 			<ImportantComplaint
 			complaint_importance = {item.complaint_importance}
 			complaint_title = {item.complaint_title}
 			complaint_description = {item.complaint_description}/>
-		
+		);
 		}))  }
 	
 	</div>
