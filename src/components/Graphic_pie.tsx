@@ -1,6 +1,5 @@
 import { Pie, PieChart, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
-import '../styles/graphics.css';
 
 const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8000';
 
@@ -27,30 +26,32 @@ export default function StraightAnglePieChart({ isAnimationActive = true }: { is
   }, []);
 
   return (
-    <>
-      <h2 className="title">Total de Reclamações por categoria</h2>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            dataKey="value"
-            startAngle={180}
-            endAngle={0}
-            data={data}
-            cx="50%"
-            cy="80%"
-            outerRadius="80%"
-            label={({ name, value }) => `${name}: ${value}`}
-            labelLine={false}
-            isAnimationActive={isAnimationActive}
-          >
-            {data.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip formatter={(value, name) => [value, name]} />
-          <Legend />
-        </PieChart>
-      </ResponsiveContainer>
-    </>
+    <ResponsiveContainer width="100%" height={300}>
+      <PieChart>
+        <Pie
+          dataKey="value"
+          data={data}
+          cx="50%"
+          cy="45%"
+          outerRadius={100}
+          innerRadius={40}
+          paddingAngle={3}
+          isAnimationActive={isAnimationActive}
+        >
+          {data.map((_, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip
+          formatter={(value, name) => [value, name]}
+          contentStyle={{ borderRadius: 8, border: '1px solid #eee', fontSize: 12 }}
+        />
+        <Legend
+          wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
+          iconType="circle"
+          iconSize={8}
+        />
+      </PieChart>
+    </ResponsiveContainer>
   );
 }

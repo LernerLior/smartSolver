@@ -1,6 +1,5 @@
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
-import '../styles/graphics.css';
 
 type CategoryEntry = {
   category: string;
@@ -14,11 +13,11 @@ type DateEntry = {
 
 const COLORS = ['#8884d8', '#82ca9d', '#ff7300', '#0088fe', '#ff0080', '#00C49F', '#FFBB28'];
 
+const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8000';
+
 export default function LineC({ isAnimationActive = true }: { isAnimationActive?: boolean }) {
   const [categories, setCategories] = useState<string[]>([]);
   const [chartData, setChartData] = useState<Record<string, string | number>[]>([]);
-
-  const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -49,27 +48,32 @@ export default function LineC({ isAnimationActive = true }: { isAnimationActive?
   }, []);
 
   return (
-    <>
-      <h2 className="title">Reclamações ao longo do tempo</h2>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-          <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip />
-          <Legend />
-          {categories.map((cat, i) => (
-            <Line
-              key={cat}
-              type="monotone"
-              dataKey={cat}
-              stroke={COLORS[i % COLORS.length]}
-              dot={{ r: 4 }}
-              isAnimationActive={isAnimationActive}
-            />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
-    </>
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={chartData} margin={{ top: 10, right: 24, left: 0, bottom: 5 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+        <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#888' }} />
+        <YAxis tick={{ fontSize: 11, fill: '#888' }} allowDecimals={false} />
+        <Tooltip
+          contentStyle={{ borderRadius: 8, border: '1px solid #eee', fontSize: 12 }}
+        />
+        <Legend
+          wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
+          iconType="circle"
+          iconSize={8}
+        />
+        {categories.map((cat, i) => (
+          <Line
+            key={cat}
+            type="monotone"
+            dataKey={cat}
+            stroke={COLORS[i % COLORS.length]}
+            strokeWidth={2}
+            dot={{ r: 3 }}
+            activeDot={{ r: 5 }}
+            isAnimationActive={isAnimationActive}
+          />
+        ))}
+      </LineChart>
+    </ResponsiveContainer>
   );
 }

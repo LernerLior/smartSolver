@@ -10,41 +10,36 @@ function FormattedText({ text }: { text: string }) {
   return (
     <>
       {lines.map((line, i) => {
-        // ### Título
-        if (line.startsWith('### ')) {
-          return <h3 key={i}>{parseInline(line.slice(4))}</h3>;
-        }
-        // #### Subtítulo
-        if (line.startsWith('#### ')) {
-          return <h4 key={i}>{parseInline(line.slice(5))}</h4>;
-        }
-        // * Item de lista
-        if (line.startsWith('* ')) {
-          return <li key={i}>{parseInline(line.slice(2))}</li>;
-        }
-        // Linha vazia
-        if (line.trim() === '') {
-          return <br key={i} />;
-        }
-        // Parágrafo normal
+        if (line.startsWith('### '))  return <h3 key={i}>{parseInline(line.slice(4))}</h3>;
+        if (line.startsWith('#### ')) return <h4 key={i}>{parseInline(line.slice(5))}</h4>;
+        if (line.startsWith('* '))    return <li key={i}>{parseInline(line.slice(2))}</li>;
+        if (line.trim() === '')       return <br key={i} />;
         return <p key={i}>{parseInline(line)}</p>;
       })}
     </>
   );
 }
 
-// Processa negrito e itálico inline
 function parseInline(text: string): React.ReactNode[] {
   const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
   return parts.map((part, i) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i}>{part.slice(2, -2)}</strong>;
-    }
-    if (part.startsWith('*') && part.endsWith('*')) {
-      return <em key={i}>{part.slice(1, -1)}</em>;
-    }
+    if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith('*')  && part.endsWith('*'))  return <em key={i}>{part.slice(1, -1)}</em>;
     return part;
   });
+}
+
+function ImportanceDots({ value }: { value: number }) {
+  return (
+    <div className="importance-dots">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <span
+          key={i}
+          className={`importance-dot ${i <= value ? 'importance-dot--active' : ''} ${value >= 4 && i <= value ? 'importance-dot--high' : ''}`}
+        />
+      ))}
+    </div>
+  );
 }
 
 type ComplaintProps = {
@@ -52,9 +47,12 @@ type ComplaintProps = {
   complaintText: string;
   complaintsolution: string;
   complaintcategory: string;
+  complaintdate: string;
+  complaintorigin: string;
+  complaintimportance: number;
 };
 
-async function AIAnalysis(complaintTitle: string, complaintText: string): Promise<string> {
+async function fetchAIAnalysis(complaintTitle: string, complaintText: string): Promise<string> {
   const res = await fetch(`${API_URL}/ai-analysis`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -65,19 +63,32 @@ async function AIAnalysis(complaintTitle: string, complaintText: string): Promis
   return data.solution ?? 'Desculpe, não foi possível gerar uma solução no momento.';
 }
 
+function formatDate(dateStr: string): string {
+  if (!dateStr) return '—';
+  const [datePart, , timePart] = dateStr.split(' '); // "21/04/2026 às 19:30"
+  const [day, month, year] = datePart.split('/');
+  if (!day || !month || !year) return dateStr;
+  const date = new Date(`${year}-${month}-${day}`);
+  const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+  return timePart ? `${formattedDate} às ${timePart}` : formattedDate;
+}
+
 export default function Complaint({
   complaintTitle,
   complaintText,
   complaintsolution,
   complaintcategory,
+  complaintdate,
+  complaintorigin,
+  complaintimportance,
 }: ComplaintProps) {
   const [loading, setLoading] = useState(false);
   const [solution, setSolution] = useState<string | null>(null);
 
-  const handleClick = async () => {
+  const handleGenerateSolution = async () => {
     setLoading(true);
     try {
-      const aiSolution = await AIAnalysis(complaintTitle, complaintText);
+      const aiSolution = await fetchAIAnalysis(complaintTitle, complaintText);
       setSolution(aiSolution);
     } catch (err) {
       console.error(err);
@@ -89,37 +100,78 @@ export default function Complaint({
 
   return (
     <div className="meubody">
+
+      {/* ── Header ── */}
       <header>
         <button className="back-button" onClick={() => window.history.back()}>
-          Voltar
+          ← Voltar
         </button>
         <h1>Recomendações</h1>
       </header>
 
-      <aside>
-        <h2>Informações Adicionais:</h2>
-        <p>Categoria: {complaintcategory}</p>
-        <p>Solução registrada: {complaintsolution || 'Nenhuma solução registrada'}</p>
-      </aside>
-
+      {/* ── Main ── */}
       <main>
-        <h1>{complaintTitle}</h1>
-        <p>{complaintText}</p>
+        <div className="complaint-card-detail">
+          <h1 className="complaint-title">{complaintTitle}</h1>
+          <p className="complaint-body">{complaintText}</p>
 
-        <h2>Recomendações da IA:</h2>
+          <span className="ai-section-label">Análise por IA</span>
 
-        {solution && (
-          <div className="solution">
-            <FormattedText text={solution} />
-          </div>
-        )}
+          {solution && (
+            <div className="solution">
+              <FormattedText text={solution} />
+            </div>
+          )}
 
-        <div style={{ marginTop: "20px" }}>
-          <button onClick={handleClick} disabled={loading} className="back-button">
-            {loading ? "Gerando..." : "Gerar Solução com IA"}
+          <button
+            className="generate-btn"
+            onClick={handleGenerateSolution}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="spinner" />
+                Gerando...
+              </>
+            ) : (
+              'Gerar Solução com IA'
+            )}
           </button>
         </div>
       </main>
+
+      {/* ── Aside ── */}
+      <aside>
+        <p className="aside-title">Informações Adicionais</p>
+
+        <div className="info-card">
+          <p className="info-card-label">Categoria</p>
+          <span className="badge">{complaintcategory || '—'}</span>
+        </div>
+
+        <div className="info-card">
+          <p className="info-card-label">Data</p>
+          <p className="info-card-value">{formatDate(complaintdate)}</p>
+        </div>
+
+        <div className="info-card">
+          <p className="info-card-label">Origem</p>
+          <p className="info-card-value">{complaintorigin || '—'}</p>
+        </div>
+
+        <div className="info-card">
+          <p className="info-card-label">Urgência</p>
+          <ImportanceDots value={complaintimportance} />
+        </div>
+
+        <div className="info-card">
+          <p className="info-card-label">Solução Registrada</p>
+          <p className="info-card-value">
+            {complaintsolution || 'Nenhuma solução registrada'}
+          </p>
+        </div>
+      </aside>
+
     </div>
   );
 }

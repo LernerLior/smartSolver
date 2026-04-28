@@ -10,6 +10,8 @@ type Row = {
   complaint_creation_date: string;
   complaint_solution: string;
   complaint_category: string;
+  complaint_importance: number;
+  complaint_origin: string;
   id: string;
 };
 
@@ -59,6 +61,9 @@ export default function PageComplaint() {
       complaintText={reclamacao.complaint_description}
       complaintsolution={reclamacao.complaint_solution}
       complaintcategory={reclamacao.complaint_category}
+      complaintdate={reclamacao.complaint_creation_date}
+      complaintorigin={reclamacao.complaint_origin}
+      complaintimportance={reclamacao.complaint_importance}
     />
   );
 }
