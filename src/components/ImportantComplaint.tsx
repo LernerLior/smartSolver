@@ -1,4 +1,6 @@
 import '../styles/dashboard.css';
+import { useNavigate } from 'react-router-dom';
+
 
 interface ComplaintProps{
   id: string,
@@ -9,7 +11,7 @@ interface ComplaintProps{
 
 
 export default function ImportantComplaint(props : ComplaintProps){
-	
+	const navegar = useNavigate();
 	const carregarbotao = (id: string) => navegar(`/complaint/${id}`);
 
 	return (
