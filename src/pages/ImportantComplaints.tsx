@@ -41,6 +41,7 @@ export default function ImportantComplaints() {
 			<ImportantComplaint
 			complaint_importance = {item.complaint_importance}
 			complaint_title = {item.complaint_title}
+			id = {item.id}
 			complaint_description = {item.complaint_description}/>
 		);
 		}))  }
