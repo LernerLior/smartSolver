@@ -35,7 +35,7 @@ export default function ImportantComplaints() {
       <main className="main2">
 
 	<div className="complaints-container">
-		{complaints_list === 0 ? (<div className="complaint-card"><p>Nenhuma reclamação encontrada.</p></div>)
+		{complaints_list.length === 0 ? (<div className="complaint-card"><p>Nenhuma reclamação encontrada.</p></div>)
 		: (complaints_list.map(function(item){
 			return(
 			<ImportantComplaint
