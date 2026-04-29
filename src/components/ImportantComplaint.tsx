@@ -1,6 +1,4 @@
 import '../styles/dashboard.css';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 
 interface ComplaintProps{
   complaint_title: string,
