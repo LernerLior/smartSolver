@@ -10,7 +10,7 @@ interface ComplaintProps{
 
 export default function ImportantComplaint(props : ComplaintProps){
 	
-	
+	const carregarbotao = (id: string) => navegar(`/complaint/${id}`);
 
 	return (
 
