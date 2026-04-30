@@ -2,6 +2,7 @@ import '../styles/graphics.css';
 import { useNavigate } from 'react-router-dom';
 import LineC from '../components/Graphic_line';
 import Pie from '../components/Graphic_pie';
+import OriginBarChart from '../components/Graphic_bar';
 
 // ─────────────────────────────────────────────
 // Para adicionar um novo gráfico:
@@ -11,7 +12,7 @@ import Pie from '../components/Graphic_pie';
 const GRAPHS = [
   { id: 'line',  title: 'Evolução Temporal',      component: <LineC /> },
   { id: 'pie',   title: 'Distribuição por Categoria', component: <Pie /> },
-  // { id: 'bar', title: 'Reclamações por Origem', component: <Bar /> },
+  { id: 'bar', title: 'Reclamações por Origem', component: <OriginBarChart /> }
 ];
 
 export default function PageGraphics() {

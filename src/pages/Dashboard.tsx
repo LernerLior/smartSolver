@@ -88,7 +88,7 @@ export default function Dashboard() {
                 lista.map((reclamacao) => (
                   <div key={reclamacao.id} className="complaint-card">
                     <h4>{reclamacao.complaint_title}</h4>
-                    <p>{reclamacao.complaint_description}</p>
+                    <p className="complaint-description">{reclamacao.complaint_description}</p>
                     <button className="read-more-btn" onClick={() => carregarbotao(reclamacao.id)}>
                       Ler mais e obter recomendações
                     </button>
